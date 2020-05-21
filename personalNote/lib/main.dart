@@ -1,20 +1,25 @@
 import 'package:Note/splash.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:Note/mainscreen.dart';
 
 
 void main() => runApp(MyApp());
 bool rememberMe = false;
 bool acceptTerm = false;
 String urlRegister = "https://yhkywy.com/mynote/php/registration.php";
+String urlLogin = "https://yhkywy.com/mynote/php/login.php";
 TextEditingController _nameEditingController = new TextEditingController();
 TextEditingController _emailEditingController = new TextEditingController();
 TextEditingController _passEditingController = new TextEditingController();
 TextEditingController _emailEditingController1 = new TextEditingController();
 TextEditingController _passEditingController1 = new TextEditingController();
+
+
 
 
 enum AuthMode { LOGIN, SINGUP }
@@ -44,23 +49,34 @@ class _LoginPageState extends State<LoginPage> {
   AuthMode _authMode = AuthMode.LOGIN;
   
 
+
+@override
+  void initState() {
+    super.initState();
+    print("Hello i'm in INITSTATE");
+    this.loadPref();
+  }
+
+
+  
+
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: <Widget>[
-            lowerHalf(context),
-            upperHalf(context),
-            _authMode == AuthMode.LOGIN
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+          resizeToAvoidBottomPadding: false,
+          body: Stack(
+            children: <Widget>[
+              upperHalf(context),
+              lowerHalf(context),
+              _authMode == AuthMode.LOGIN
                 ? loginCard(context)
                 : singUpCard(context),
-            pageTitle(),
-          ],
-        ),
-      ),
+              pageTitle(),
+            ],
+          )),
     );
   }
 
@@ -155,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        onPressed: () {},
+                        onPressed: this._userLogin,
                       )
                     ],
                   )
@@ -189,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(color: Colors.grey),
             ),
             FlatButton(
-              onPressed: () {},
+              onPressed: _forgotPassword,
                 child: Text("Resert Password ?"),
             ),
           ],
@@ -197,6 +213,166 @@ class _LoginPageState extends State<LoginPage> {
       ],
     );
   }
+
+void _userLogin() async {
+    ProgressDialog pr = new ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: false);
+    pr.style(message: "Log in...");
+    pr.show();
+    String email = _emailEditingController1.text;
+    String password = _passEditingController1.text;
+
+    http.post(urlLogin, body: {
+      "email": email,
+      "password": password,
+    }).then((res) {
+      print(res.body);
+      if (res.body.replaceAll('\n', "") == "success") {
+        pr.dismiss();
+        Toast.show("Login success", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (BuildContext context)=>MainScreen(email: email,))
+        );
+      }else{
+        pr.dismiss();
+        Toast.show("Login failed", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      }
+    }).catchError((err) {
+      print(err);
+      pr.dismiss();
+    });
+  }
+
+
+  void _forgotPassword() {
+    TextEditingController phoneController = TextEditingController();
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Forgot Password?"),
+          content: new Container(
+            height: 100,
+            child: Column(
+              children: <Widget>[
+                Text(
+                  "Enter your recovery email",
+                ),
+                TextField(
+                    decoration: InputDecoration(
+                  labelText: 'Email',
+                  icon: Icon(Icons.email),
+                ))
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                print(
+                  phoneController.text,
+                );
+              },
+            ),
+            new FlatButton(
+              child: new Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  
+
+Future<bool> _onBackPressed() {
+    return showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit an App'),
+            actions: <Widget>[
+              MaterialButton(
+                  onPressed: () {
+                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                  },
+                  child: Text("Exit")),
+              MaterialButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text("Cancel")),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+Future<void> loadPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = (prefs.getString('email')) ?? '';
+    String password = (prefs.getString('pass')) ?? '';
+    if (email.length > 1) {
+      setState(() {
+        _emailEditingController1.text = email;
+        _passEditingController1.text = password;
+        rememberMe = true;
+      });
+    }
+  }
+
+void _onRememberMeChanged(bool value) {
+    setState(() {
+      rememberMe = value;
+      print(rememberMe);
+        if (rememberMe) {
+          savepref(true);
+        } else {
+          savepref(false);
+        }
+      //savepref(value);
+    });
+  }
+
+
+void savepref(bool value) async {
+    String email = _emailEditingController1.text;
+    String password = _passEditingController1.text;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (value) {
+      //save preference
+      await prefs.setString('email', email);
+      await prefs.setString('pass', password);
+      Toast.show("Preferences have been saved", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    } else {
+      //delete preference
+      await prefs.setString('email', '');
+      await prefs.setString('pass', '');
+      setState(() {
+        _emailEditingController1.text = '';
+        _passEditingController1.text = '';
+        rememberMe = false;
+      });
+      Toast.show("Preferences have removed", context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+    }
+  }
+
+
+  //########################################################################################
+  //########################################################################################
+
 
   Widget singUpCard(BuildContext context) {
     return Column(
@@ -338,12 +514,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _onRememberMeChanged(bool value) {
-    setState(() {
-      rememberMe = value;
-      //savepref(value);
-    });
-  }
+  
 
 
   void _onChange(bool value) {

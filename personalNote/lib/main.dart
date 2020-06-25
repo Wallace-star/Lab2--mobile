@@ -1,4 +1,3 @@
-import 'package:Note/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:Note/mainscreen.dart';
+
+import 'dart:async';
 
 
 void main() => runApp(MyApp());
@@ -227,14 +228,13 @@ void _userLogin() async {
       "password": password,
     }).then((res) {
       print(res.body);
+      
       if (res.body.replaceAll('\n', "") == "success") {
+        
         pr.dismiss();
         Toast.show("Login success", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (BuildContext context)=>MainScreen(email: email,))
-        );
+      
       }else{
         pr.dismiss();
         Toast.show("Login failed", context,

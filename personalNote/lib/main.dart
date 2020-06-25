@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:Note/mainscreen.dart';
+import 'package:Note/user.dart';
 
 import 'dart:async';
 
@@ -227,13 +228,31 @@ void _userLogin() async {
       "email": email,
       "password": password,
     }).then((res) {
+      
       print(res.body);
       
       if (res.body.replaceAll('\n', "") == "success") {
         
+        var string = res.body;
+        List userdata = string.split(",");
         pr.dismiss();
+        User _user = new User(
+              name: userdata[1],
+              email: email,
+              password: password,
+              phone: userdata[3],
+              credit: userdata[4],
+              datereg: userdata[5],
+              quantity: userdata[6]);
+              print("test");
         Toast.show("Login success", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => MainScreen(
+                        
+                      )));
       
       }else{
         pr.dismiss();

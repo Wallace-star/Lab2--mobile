@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:Note/adminproduct.dart';
 import 'package:Note/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:toast/toast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'adminproduct.dart';
 import 'cartscreen.dart';
 import 'paymenthistoryscreen.dart';
 import 'profilescreen.dart';
 
 class MainScreen extends StatefulWidget {
+  final User user;
 
-
-  const MainScreen({Key key, }) : super(key: key);
+  const MainScreen({Key key, this.user}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -32,15 +32,18 @@ class _MainScreenState extends State<MainScreen> {
   String cartquantity = "0";
   int quantity = 1;
   bool _isadmin = false;
-  String titlecenter = "Loading products...";
-  String server = "https://slumberjer.com/grocery";
+  String titlecenter = "Loading books...";
+  String server = "http://yhkywy.com/mynote";
+
 
   @override
   void initState() {
     super.initState();
     _loadData();
     _loadCartQuantity();
-    
+    if (widget.user.email == "admin@mynote.com") {
+      _isadmin = true;
+    }
   }
 
   @override
@@ -54,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
           drawer: mainDrawer(context),
           appBar: AppBar(
             title: Text(
-              'Products List',
+              'Book List',
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -79,9 +82,345 @@ class _MainScreenState extends State<MainScreen> {
             ],
           ),
           body: Container(
-          )
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Visibility(
+                  visible: _visible,
+                  child: Card(
+                      elevation: 10,
+                      child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    FlatButton(
+                                        onPressed: () => _sortItem("Recent"),
+                                        color:
+                                            Color.fromARGB(101, 255, 218, 50),
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Column(
+                                          // Replace with a Row for horizontal icon + text
+                                          children: <Widget>[
+                                           
+                                            Text(
+                                              "Recent",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    FlatButton(
+                                        onPressed: () => _sortItem("Martial-Arts"),
+                                        color:
+                                            Color.fromARGB(101, 255, 218, 50),
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Column(
+                                          // Replace with a Row for horizontal icon + text
+                                          children: <Widget>[
+                                            
+                                            Text(
+                                              "Martial-Arts",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    FlatButton(
+                                        onPressed: () => _sortItem("Mystery"),
+                                        color:
+                                            Color.fromARGB(101, 255, 218, 50),
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Column(
+                                          // Replace with a Row for horizontal icon + text
+                                          children: <Widget>[
+                                           
+                                            Text(
+                                              "Mystery",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    FlatButton(
+                                        onPressed: () =>
+                                            _sortItem("Romance"),
+                                        color:
+                                            Color.fromARGB(101, 255, 218, 50),
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Column(
+                                          // Replace with a Row for horizontal icon + text
+                                          children: <Widget>[
+                                            
+                                            Text(
+                                              "Romance",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    FlatButton(
+                                        onPressed: () => _sortItem("Science"),
+                                        color:
+                                            Color.fromARGB(101, 255, 218, 50),
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Column(
+                                          // Replace with a Row for horizontal icon + text
+                                          children: <Widget>[
+                                            
+                                            Text(
+                                              "Science",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    FlatButton(
+                                        onPressed: () => _sortItem("Time-Travel"),
+                                        color:
+                                            Color.fromARGB(101, 255, 218, 50),
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Column(
+                                          // Replace with a Row for horizontal icon + text
+                                          children: <Widget>[
+                                            
+                                            Text(
+                                              "Time-Travel",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    FlatButton(
+                                        onPressed: () => _sortItem("Horror"),
+                                        color:
+                                            Color.fromARGB(101, 255, 218, 50),
+                                        padding: EdgeInsets.all(10.0),
+                                        child: Column(
+                                          // Replace with a Row for horizontal icon + text
+                                          children: <Widget>[
+                                            
+                                            Text(
+                                              "Horror",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                                
+                                
 
-          
+                              ],
+                            ),
+                          ))),
+                ),
+                Visibility(
+                    visible: _visible,
+                    child: Card(
+                      elevation: 5,
+                      child: Container(
+                        height: screenHeight / 12.5,
+                        margin: EdgeInsets.fromLTRB(20, 2, 20, 2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Flexible(
+                                child: Container(
+                              height: 30,
+                              child: TextField(
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  autofocus: false,
+                                  controller: _prdController,
+                                  decoration: InputDecoration(
+                                      icon: Icon(Icons.search),
+                                      border: OutlineInputBorder())),
+                            )),
+                            Flexible(
+                                child: MaterialButton(
+                                    color: Color.fromARGB(101, 255, 218, 50),
+                                    onPressed: () =>
+                                        {_sortItembyName(_prdController.text)},
+                                    elevation: 5,
+                                    child: Text(
+                                      "Search Book",
+                                      style: TextStyle(color: Colors.black),
+                                    )))
+                          ],
+                        ),
+                      ),
+                    )),
+                Text(curtype,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                productdata == null
+                    ? Flexible(
+                        child: Container(
+                            child: Center(
+                                child: Text(
+                        titlecenter,
+                        style: TextStyle(
+                            color: Color.fromARGB(101, 255, 218, 50),
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold),
+                      ))))
+                    : Expanded(
+                        child: GridView.count(
+                            crossAxisCount: 2,
+                            childAspectRatio:
+                                (screenWidth / screenHeight) / 0.8,
+                            children:
+                                List.generate(productdata.length, (index) {
+                              return Container(
+                                  child: Card(
+                                      elevation: 10,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: () =>
+                                                  _onImageDisplay(index),
+                                              child: Container(
+                                                height: screenHeight / 5.9,
+                                                width: screenWidth / 3.5,
+                                                child: ClipOval(
+                                                    child: CachedNetworkImage(
+                                                  fit: BoxFit.fill,
+                                                  imageUrl: server +
+                                                      "/php/productimage/${productdata[index]['id']}.jpg",
+                                                  placeholder: (context, url) =>
+                                                      new CircularProgressIndicator(),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          new Icon(Icons.error),
+                                                )),
+                                              ),
+                                            ),
+                                            Text(productdata[index]['name'],
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black)),
+                                            Text(
+                                              "RM " +
+                                                  productdata[index]['price'],
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              "Quantity available:" +
+                                                  productdata[index]
+                                                      ['quantity'],
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            MaterialButton(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0)),
+                                              minWidth: 100,
+                                              height: 30,
+                                              child: Text(
+                                                'Add to Cart',
+                                              ),
+                                              color: Color.fromARGB(
+                                                  101, 255, 218, 50),
+                                              textColor: Colors.black,
+                                              elevation: 10,
+                                              onPressed: () =>
+                                                  _addtocartdialog(index),
+                                            ),
+                                          ],
+                                        ),
+                                      )));
+                            })))
+              ],
+            ),
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () async {
+              if (widget.user.email == "unregistered") {
+                Toast.show("Please register to use this function", context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                return;
+              } else if (widget.user.email == "admin@mynote.com") {
+                Toast.show("Admin mode!!!", context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                return;
+              } else if (widget.user.quantity == "0") {
+                Toast.show("Cart empty", context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                return;
+              } else {
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => CartScreen(
+                              user: widget.user,
+                            )));
+                _loadData();
+                _loadCartQuantity();
+              }
+            },
+            icon: Icon(Icons.add_shopping_cart),
+            label: Text(cartquantity),
+          ),
         ));
   }
 
@@ -109,7 +448,7 @@ class _MainScreenState extends State<MainScreen> {
                           image: DecorationImage(
                               fit: BoxFit.scaleDown,
                               image: NetworkImage(server +
-                                  "/productimage/${productdata[index]['id']}.jpg")))),
+                                  "/php/productimage/${productdata[index]['id']}.jpg")))),
                 ],
               ),
             ));
@@ -122,7 +461,7 @@ class _MainScreenState extends State<MainScreen> {
     await http.post(urlLoadJobs, body: {}).then((res) {
       if (res.body == "nodata") {
         cartquantity = "0";
-        titlecenter = "No product found";
+        titlecenter = "No book found";
         setState(() {
           productdata = null;
         });
@@ -130,7 +469,7 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           var extractdata = json.decode(res.body);
           productdata = extractdata["products"];
-          
+          cartquantity = widget.user.quantity;
         });
       }
     }).catchError((err) {
@@ -139,7 +478,17 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _loadCartQuantity() async {
-
+    String urlLoadJobs = server + "/php/load_cartquantity.php";
+    await http.post(urlLoadJobs, body: {
+      "email": widget.user.email,
+    }).then((res) {
+      if (res.body == "nodata") {
+      } else {
+        widget.user.quantity = res.body;
+      }
+    }).catchError((err) {
+      print(err);
+    });
   }
 
   Widget mainDrawer(BuildContext context) {
@@ -147,13 +496,39 @@ class _MainScreenState extends State<MainScreen> {
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
-
+            accountName: Text(widget.user.name),
+            accountEmail: Text(widget.user.email),
+            otherAccountsPictures: <Widget>[
+              Text("RM " + widget.user.credit,
+                  style: TextStyle(fontSize: 16.0, color: Colors.white)),
+            ],
+            currentAccountPicture: CircleAvatar(
+              backgroundColor:
+                  Theme.of(context).platform == TargetPlatform.android
+                      ? Colors.white
+                      : Colors.white,
+              child: Text(
+                widget.user.name.toString().substring(0, 1).toUpperCase(),
+                style: TextStyle(fontSize: 40.0),
+              ),
+              backgroundImage: NetworkImage(
+                  server + "/php/profileimage/${widget.user.email}.jpg?"),
+            ),
+            onDetailsPressed: () => {
+              Navigator.pop(context),
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => ProfileScreen(
+                            user: widget.user,
+                          )))
+            },
           ),
           ListTile(
               title: Text(
-                "Product List",
+                "Book List",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
               trailing: Icon(Icons.arrow_forward),
@@ -163,9 +538,9 @@ class _MainScreenState extends State<MainScreen> {
                   }),
           ListTile(
               title: Text(
-                "Shopping Cart",
+                "Cart",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
               trailing: Icon(Icons.arrow_forward),
@@ -177,23 +552,36 @@ class _MainScreenState extends State<MainScreen> {
               title: Text(
                 "Payment History",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
               trailing: Icon(Icons.arrow_forward),
               onTap: () => {
-                    
+                    Navigator.pop(context),
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PaymentHistoryScreen(
+                                  user: widget.user,
+                                ))),
                   }),
           ListTile(
               title: Text(
-                "User Profile",
+                "Profile",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
               trailing: Icon(Icons.arrow_forward),
               onTap: () => {
-                    
+                    Navigator.pop(context),
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => ProfileScreen(
+                                  user: widget.user,
+                                )))
                   }),
           Visibility(
             visible: _isadmin,
@@ -201,30 +589,37 @@ class _MainScreenState extends State<MainScreen> {
               children: <Widget>[
                 Divider(
                   height: 2,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 Center(
                   child: Text(
                     "Admin Menu",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
                 ListTile(
                     title: Text(
-                      "My Products",
+                      "My Notes",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     trailing: Icon(Icons.arrow_forward),
                     onTap: () => {
-                          
+                          Navigator.pop(context),
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      AdminProduct(
+                                        user: widget.user,
+                                      )))
                         }),
                 ListTile(
                   title: Text(
                     "Customer Orders",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                   trailing: Icon(Icons.arrow_forward),
@@ -233,7 +628,7 @@ class _MainScreenState extends State<MainScreen> {
                   title: Text(
                     "Report",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                   trailing: Icon(Icons.arrow_forward),
@@ -247,11 +642,173 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   _addtocartdialog(int index) {
-
+    if (widget.user.email == "unregistered@mynote.com") {
+      Toast.show("Please register to use this function", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    }
+    if (widget.user.email == "admin@mynote.com") {
+      Toast.show("Admin Mode!!!", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    }
+    quantity = 1;
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, newSetState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
+              title: new Text(
+                "Add " + productdata[index]['name'] + " to Cart?",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    "Select quantity of book",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          FlatButton(
+                            onPressed: () => {
+                              newSetState(() {
+                                if (quantity > 1) {
+                                  quantity--;
+                                }
+                              })
+                            },
+                            child: Icon(
+                              MdiIcons.minus,
+                              color: Color.fromARGB(101, 255, 218, 50),
+                            ),
+                          ),
+                          Text(
+                            quantity.toString(),
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          FlatButton(
+                            onPressed: () => {
+                              newSetState(() {
+                                if (quantity <
+                                    (int.parse(productdata[index]['quantity']) -
+                                        2)) {
+                                  quantity++;
+                                } else {
+                                  Toast.show("Quantity not available", context,
+                                      duration: Toast.LENGTH_LONG,
+                                      gravity: Toast.BOTTOM);
+                                }
+                              })
+                            },
+                            child: Icon(
+                              MdiIcons.plus,
+                              color: Color.fromARGB(101, 255, 218, 50),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              actions: <Widget>[
+                MaterialButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                      _addtoCart(index);
+                    },
+                    child: Text(
+                      "Yes",
+                      style: TextStyle(
+                        color: Color.fromARGB(101, 255, 218, 50),
+                      ),
+                    )),
+                MaterialButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                        color: Color.fromARGB(101, 255, 218, 50),
+                      ),
+                    )),
+              ],
+            );
+          });
+        });
   }
 
   void _addtoCart(int index) {
-
+    if (widget.user.email == "unregistered@mynote.com") {
+      Toast.show("Please register first", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    }
+    if (widget.user.email == "admin@mynote.com") {
+      Toast.show("Admin mode", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    }
+    try {
+      int cquantity = int.parse(productdata[index]["quantity"]);
+      print(cquantity);
+      print(productdata[index]["id"]);
+      print(widget.user.email);
+      if (cquantity > 0) {
+        ProgressDialog pr = new ProgressDialog(context,
+            type: ProgressDialogType.Normal, isDismissible: true);
+        pr.style(message: "Add to cart...");
+        pr.show();
+        String urlLoadJobs = server + "/php/insert_cart.php";
+        http.post(urlLoadJobs, body: {
+          "email": widget.user.email,
+          "proid": productdata[index]["id"],
+          "quantity": quantity.toString(),
+        }).then((res) {
+          print(res.body);
+          if (res.body == "failed") {
+            Toast.show("Failed add to cart", context,
+                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+            pr.dismiss();
+            return;
+          } else {
+            List respond = res.body.split(",");
+            setState(() {
+              cartquantity = respond[1];
+              widget.user.quantity = cartquantity;
+            });
+            Toast.show("Success add to cart", context,
+                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+          }
+          pr.dismiss();
+        }).catchError((err) {
+          print(err);
+          pr.dismiss();
+        });
+        pr.dismiss();
+      } else {
+        Toast.show("Out of stock", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      }
+    } catch (e) {
+      Toast.show("Failed add to cart", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    }
   }
 
   void _sortItem(String type) {
@@ -268,7 +825,7 @@ class _MainScreenState extends State<MainScreen> {
           setState(() {
             productdata = null;
             curtype = type;
-            titlecenter = "No product found";
+            titlecenter = "No book found";
           });
           pr.dismiss();
         } else {
@@ -306,11 +863,11 @@ class _MainScreenState extends State<MainScreen> {
           .timeout(const Duration(seconds: 4))
           .then((res) {
             if (res.body == "nodata") {
-              Toast.show("Product not found", context,
+              Toast.show("Book not found", context,
                   duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
               pr.dismiss();
               setState(() {
-                titlecenter = "No product found";
+                titlecenter = "No book found";
                 curtype = "search for " + "'" + prname + "'";
                 productdata = null;
               });
@@ -345,7 +902,28 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   gotoCart() async {
-    
+    if (widget.user.email == "unregistered") {
+      Toast.show("Please register to use this function", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    } else if (widget.user.email == "admin@mynote.com") {
+      Toast.show("Admin mode!!!", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    } else if (widget.user.quantity == "0") {
+      Toast.show("Cart empty", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    } else {
+      await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => CartScreen(
+                    user: widget.user,
+                  )));
+      _loadData();
+      _loadCartQuantity();
+    }
   }
 
   Future<bool> _onBackPressed() {
@@ -357,13 +935,13 @@ class _MainScreenState extends State<MainScreen> {
             title: new Text(
               'Are you sure?',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
             content: new Text(
               'Do you want to exit an App',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
             actions: <Widget>[
@@ -374,7 +952,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: Text(
                     "Exit",
                     style: TextStyle(
-                      color: Color.fromRGBO(101, 255, 218, 50),
+                      color: Color.fromARGB(101, 255, 218, 50),
                     ),
                   )),
               MaterialButton(
@@ -384,7 +962,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: Text(
                     "Cancel",
                     style: TextStyle(
-                      color: Color.fromRGBO(101, 255, 218, 50),
+                      color: Color.fromARGB(101, 255, 218, 50),
                     ),
                   )),
             ],

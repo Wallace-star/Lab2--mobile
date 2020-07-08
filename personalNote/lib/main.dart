@@ -14,13 +14,13 @@ void main() => runApp(MyApp());
 bool rememberMe = false;
 bool acceptTerm = false;
 String urlRegister = "https://yhkywy.com/mynote/php/registration.php";
-String urlLogin = "https://yhkywy.com/mynote/php/login.php";
+String urlLogin = "https://yhkywy.com/mynote/php/login_user.php";
 TextEditingController _nameEditingController = new TextEditingController();
 TextEditingController _emailEditingController = new TextEditingController();
+TextEditingController _phoneEditingController = new TextEditingController();
 TextEditingController _passEditingController = new TextEditingController();
 TextEditingController _emailEditingController1 = new TextEditingController();
 TextEditingController _passEditingController1 = new TextEditingController();
-
 
 
 
@@ -230,12 +230,9 @@ void _userLogin() async {
     }).then((res) {
       
       print(res.body);
-      
-      if (res.body.replaceAll('\n', "") == "success") {
-        
-        var string = res.body;
+      var string = res.body;
         List userdata = string.split(",");
-        pr.dismiss();
+      if (userdata[0] == "success") {        
         User _user = new User(
               name: userdata[1],
               email: email,
@@ -244,14 +241,14 @@ void _userLogin() async {
               credit: userdata[4],
               datereg: userdata[5],
               quantity: userdata[6]);
+              pr.dismiss();
               print("test");
         Toast.show("Login success", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => MainScreen(
-                        
+                  builder: (BuildContext context) => MainScreen(user: _user                      
                       )));
       
       }else{
@@ -412,10 +409,10 @@ void savepref(bool value) async {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "Create Account(Registration)",
+                      "Create Account",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 28,
+                        fontSize: 22,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -437,7 +434,15 @@ void savepref(bool value) async {
                         labelText: "Email", hasFloatingPlaceholder: true),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
+                  ),
+                  TextFormField(
+                    controller: _phoneEditingController,
+                    decoration: InputDecoration(
+                        labelText: "Phone", hasFloatingPlaceholder: true),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   TextFormField(
                     controller: _passEditingController,

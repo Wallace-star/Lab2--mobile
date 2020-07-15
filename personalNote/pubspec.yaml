@@ -38,7 +38,9 @@ dev_dependencies:
   random_string: ^1.1.0
   webview_flutter: ^0.3.14+1
   image_picker:
+  intl: ^0.16.1
   recase: ^3.0.0
+  image_cropper: ^1.2.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

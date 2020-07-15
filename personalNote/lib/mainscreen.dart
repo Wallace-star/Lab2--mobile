@@ -369,6 +369,14 @@ class _MainScreenState extends State<MainScreen> {
                                                 color: Colors.black,
                                               ),
                                             ),
+                                            Text(
+                                              "Weight:" +
+                                                  productdata[index]['weigth'] +
+                                                  " gram",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
                                             MaterialButton(
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:

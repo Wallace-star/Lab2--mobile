@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:Note/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_dialog/progress_dialog.dart';
@@ -33,13 +32,13 @@ class _AdminProductState extends State<AdminProduct> {
   int quantity = 1;
   bool _isadmin = false;
   String titlecenter = "Loading products...";
-  String server = "https://slumberjer.com/grocery";
+  String server = "http://yhkywy.com/mynote";
 
   @override
   void initState() {
     super.initState();
     
-    if (widget.user.email == "admin@grocery.com") {
+    if (widget.user.email == "admin@mynote.com") {
       _isadmin = true;
     }
   }

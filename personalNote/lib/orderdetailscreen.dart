@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'order.dart';
 import 'package:http/http.dart' as http;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   final Order order;
@@ -17,6 +18,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   List _orderdetails;
   String titlecenter = "Loading order details...";
   double screenHeight, screenWidth;
+  String server = "http://yhkywy.com/mynote";
 
   @override
   void initState() {
@@ -80,6 +82,21 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                             style:
                                                 TextStyle(color: Colors.black),
                                           )),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Padding(
+                                                padding: EdgeInsets.all(3),
+                                                child: CachedNetworkImage(
+                                                  fit: BoxFit.fill,
+                                                  imageUrl: server +
+                                                      "/php/productimage/${_orderdetails[index]['id']}.jpg",
+                                                  placeholder: (context, url) =>
+                                                      new CircularProgressIndicator(),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          new Icon(Icons.error),
+                                                )),
+                                          ),
                                       Expanded(
                                           flex: 4,
                                           child: Column(

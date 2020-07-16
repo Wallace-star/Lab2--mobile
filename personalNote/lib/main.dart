@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: screenHeight / 4),
+          margin: EdgeInsets.only(top: screenHeight / 3),
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Card(
             shape: RoundedRectangleBorder(
@@ -182,7 +182,10 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        Column(
+        SizedBox(
+            height: 10,
+          ),
+        Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -201,6 +204,15 @@ class _LoginPageState extends State<LoginPage> {
               },
               textColor: Colors.black87,
               child: Text("Create Account"),
+            ),
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: 40,
             ),
             Text(
               "Forgot password?",
@@ -394,7 +406,7 @@ void savepref(bool value) async {
     return Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: screenHeight / 5),
+          margin: EdgeInsets.only(top: screenHeight / 4),
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Card(
             shape: RoundedRectangleBorder(
@@ -423,7 +435,8 @@ void savepref(bool value) async {
                    TextFormField(
                     controller: _nameEditingController,
                     decoration: InputDecoration(
-                        labelText: "Name", hasFloatingPlaceholder: true),
+                        labelText: "Name", 
+                        icon: Icon(Icons.person),),
                   ),
                   SizedBox(
                     height: 15,
@@ -431,7 +444,8 @@ void savepref(bool value) async {
                   TextFormField(
                     controller: _emailEditingController,
                     decoration: InputDecoration(
-                        labelText: "Email", hasFloatingPlaceholder: true),
+                        labelText: "Email", 
+                        icon: Icon(Icons.email),),
                   ),
                   SizedBox(
                     height: 15,
@@ -439,7 +453,8 @@ void savepref(bool value) async {
                   TextFormField(
                     controller: _phoneEditingController,
                     decoration: InputDecoration(
-                        labelText: "Phone", hasFloatingPlaceholder: true),
+                        labelText: "Phone", 
+                        icon: Icon(Icons.phone),),
                   ),
                   SizedBox(
                     height: 10,
@@ -447,15 +462,9 @@ void savepref(bool value) async {
                   TextFormField(
                     controller: _passEditingController,
                     decoration: InputDecoration(
-                        labelText: "Password", hasFloatingPlaceholder: true),
+                        labelText: "Password", 
+                        icon: Icon(Icons.lock),),
                         obscureText: true,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Password must be at least 8 characters and include a special character and number",
-                    style: TextStyle(color: Colors.grey),
                   ),
                   SizedBox(
                     height: 5,
@@ -619,7 +628,7 @@ void _eEULA() {
                               fontSize: 12.0,
                             ),
                             text:
-                                "Please click the link to read https://www.eulatemplate.com/live.php?token=3SQ65WI76cviSbX17hxAcvm1lOfXRDx9"
+                                "This End-User License Agreement (EULA) is a legal agreement between you and MyNote.This EULA agreement governs your acquisition and use of our PersonalNote software (Software) directly from MyNote or indirectly through a MyNote authorized reseller or distributor (a Reseller).Please read this EULA agreement carefully before completing the installation process and using the PersonalNote software. It provides a license to use the PersonalNote software and contains warranty information and liability disclaimers.If you register for a free trial of the PersonalNote software, this EULA agreement will also govern that trial. By clicking accept or installing and/or using the PersonalNote software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement. lick https://www.eulatemplate.com/live.php?token=3SQ65WI76cviSbX17hxAcvm1lOfXRDx9 to raed details"
                             //children: getSpan(),
                             )),
                   ),

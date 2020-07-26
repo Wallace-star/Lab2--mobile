@@ -41,6 +41,7 @@ dev_dependencies:
   intl: ^0.16.1
   recase: ^3.0.0
   image_cropper: ^1.2.2
+  carousel_pro: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -57,6 +58,15 @@ flutter:
   assets:
     - assets/loginscreen.png
     - assets/splash.png
+    - assets/phonecam.png
+    - assets/main.png
+    - assets/1001.jpg
+    - assets/1002.jpg
+    - assets/1003.jpg
+    - assets/1004.jpg
+    - assets/1005.jpg
+    - assets/1006.jpg
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

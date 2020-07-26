@@ -13,6 +13,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'cartscreen.dart';
 import 'paymenthistoryscreen.dart';
 import 'profilescreen.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 
 class MainScreen extends StatefulWidget {
   final User user;
@@ -51,6 +52,25 @@ class _MainScreenState extends State<MainScreen> {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     TextEditingController _prdController = new TextEditingController();
+    Widget image_carousel = new Container(
+    height: 300.0,
+    child:  new Carousel(
+      boxFit: BoxFit.cover,
+      images: [
+        AssetImage('assets/1001.jpg'),
+        AssetImage('assets/1002.jpg'),
+        AssetImage('assets/1003.jpg'),
+        AssetImage('assets/1004.jpg'),
+        AssetImage('assets/1005.jpg'),
+        AssetImage('assets/1006.jpg'),
+      ],
+      autoplay: true,
+//      animationCurve: Curves.fastOutSlowIn,
+//      animationDuration: Duration(milliseconds: 1000),
+      dotSize: 4.0,
+      indicatorBgPadding: 2.0,
+    ),
+  );
     return WillPopScope(
         onWillPop: _onBackPressed,
         child: Scaffold(
@@ -85,6 +105,7 @@ class _MainScreenState extends State<MainScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                image_carousel,
                 Visibility(
                   visible: _visible,
                   child: Card(
@@ -607,7 +628,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 ListTile(
                     title: Text(
-                      "My Notes",
+                      "My Books",
                       style: TextStyle(
                         color: Colors.black,
                       ),

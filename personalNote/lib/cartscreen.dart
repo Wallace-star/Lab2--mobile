@@ -6,7 +6,6 @@ import 'package:Note/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:random_string/random_string.dart';
 import 'mainscreen.dart';

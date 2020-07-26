@@ -6,7 +6,6 @@ import 'package:toast/toast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:Note/mainscreen.dart';
 import 'package:Note/user.dart';
-
 import 'dart:async';
 
 
@@ -95,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.lightBlueAccent,
           ),
           Text(
-            "PersonalNote",
+            "PersonalBook",
             style: TextStyle(
                 fontSize: 34, color: Colors.black, fontWeight: FontWeight.w400),
           )
@@ -531,7 +530,7 @@ void savepref(bool value) async {
     return Container(
       height: 450,
       child: Image.asset(
-        'assets/loginscreen.png',
+        'assets/main.png',
         fit: BoxFit.cover,
       ),
     );
